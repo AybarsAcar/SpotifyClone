@@ -9,8 +9,8 @@ import UIKit
 
 enum BrowseSectionType {
   case newReleases(viewModels: [NewReleasesCellViewModel])
-  case featuredPlaylists(viewModels: [NewReleasesCellViewModel])
-  case recommendedTracks(viewModels: [NewReleasesCellViewModel])
+  case featuredPlaylists(viewModels: [FeaturedPlaylistCellViewModel])
+  case recommendedTracks(viewModels: [RecommendedTrackCellViewModel])
 }
 
 class HomeViewController: UIViewController {
@@ -170,8 +170,14 @@ class HomeViewController: UIViewController {
         artistName: album.artists.first?.name ?? "-"
       )
     })))
-    sections.append(.featuredPlaylists(viewModels: []))
-    sections.append(.recommendedTracks(viewModels: []))
+    
+    sections.append(.featuredPlaylists(viewModels: playlists.compactMap({ item in
+      return FeaturedPlaylistCellViewModel(name: item.name, artworkURL: URL(string: item.images.first?.url ?? ""), creatorName: item.owner.displayName)
+    })))
+    
+    sections.append(.recommendedTracks(viewModels: tracks.compactMap({ item in
+      return RecommendedTrackCellViewModel(name: item.name, artistName: item.artists.first?.name ?? "-", artworkURL: URL(string: item.album.images.first?.url ?? ""))
+    })))
     
     // when teh modelsa re updated make sure to reload the collection
     collectionView.reloadData()
@@ -222,14 +228,19 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
       guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier, for: indexPath) as? FeaturedPlaylistCollectionViewCell else {
         return UICollectionViewCell()
       }
-      cell.backgroundColor = .blue
+      let viewModel = viewModels[indexPath.row]
+
+      cell.configure(with: viewModel)
       return cell
       
     case .recommendedTracks(viewModels: let viewModels):
       guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendedTrackCollectionViewCell.identifier, for: indexPath) as? RecommendedTrackCollectionViewCell else {
         return UICollectionViewCell()
       }
-      cell.backgroundColor = .orange
+      
+      let viewModel = viewModels[indexPath.row]
+
+      cell.configure(with: viewModel)
       return cell
     }
   }
