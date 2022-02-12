@@ -15,6 +15,10 @@ enum BrowseSectionType {
 
 class HomeViewController: UIViewController {
   
+  private var newAlbums: [Album] = []
+  private var playlists: [PlayList] = []
+  private var tracks: [AudioTrack] = []
+  
   private var collectionView: UICollectionView = {
     let layout = UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
       return HomeViewController.createSectionLayout(section: sectionIndex)
@@ -159,8 +163,13 @@ class HomeViewController: UIViewController {
       self.configureModels(newAlbums: newAlbums, playlists: playlists, tracks: tracks)
     }
   }
+ 
   
   private func configureModels(newAlbums: [Album], playlists: [PlayList], tracks: [AudioTrack]) {
+    // cache them so we can refer to it when the user taps on it as we are navigating
+    self.newAlbums = newAlbums
+    self.playlists = playlists
+    self.tracks = tracks
     
     sections.append(.newReleases(viewModels: newAlbums.compactMap({ album in
       return NewReleasesCellViewModel(
@@ -176,7 +185,7 @@ class HomeViewController: UIViewController {
     })))
     
     sections.append(.recommendedTracks(viewModels: tracks.compactMap({ item in
-      return RecommendedTrackCellViewModel(name: item.name, artistName: item.artists.first?.name ?? "-", artworkURL: URL(string: item.album.images.first?.url ?? ""))
+      return RecommendedTrackCellViewModel(name: item.name, artistName: item.artists.first?.name ?? "-", artworkURL: URL(string: item.album?.images.first?.url ?? ""))
     })))
     
     // when teh modelsa re updated make sure to reload the collection
@@ -195,6 +204,38 @@ class HomeViewController: UIViewController {
 
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    collectionView.deselectItem(at: indexPath, animated: true)
+    
+    let section = sections[indexPath.section]
+    
+    switch section {
+    case .newReleases(viewModels: let viewModels):
+      let album = newAlbums[indexPath.row] // get the album clicked
+      
+      let vc = AlbumViewController(album: album)
+      vc.title = album.name
+      vc.navigationItem.largeTitleDisplayMode = .never
+      
+      // navigate to it - push it onto the navigation stack
+      navigationController?.pushViewController(vc, animated: true)
+
+    case .featuredPlaylists(viewModels: let viewModels):
+      let playlist = playlists[indexPath.row] // get the album clicked
+      
+      let vc = PlaylistViewController(playlist: playlist)
+      vc.title = playlist.name
+      vc.navigationItem.largeTitleDisplayMode = .never
+      
+      // navigate to it - push it onto the navigation stack
+      navigationController?.pushViewController(vc, animated: true)
+      break
+
+    case .recommendedTracks(viewModels: let viewModels):
+      break
+    }
+  }
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     

@@ -9,18 +9,18 @@ import Foundation
 
 
 struct AudioTrack: Codable {
-  let album: Album
+  let album: Album?
   let artists: [Artist]
   let availableMarkets: [String]
   let discNumber, durationMS: Int
   let explicit: Bool
-  let externalIDS: [String: String]
+  let externalIDS: [String: String]?
   let externalUrls: [String: String]
   let href: String
   let id: String
   let isLocal: Bool
   let name: String
-  let popularity: Int
+  let popularity: Int?
   let previewURL: String?
   let trackNumber: Int
   let type: String
