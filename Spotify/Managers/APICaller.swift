@@ -61,7 +61,7 @@ final class APICaller {
   }
   
   
-  func getFeaturedReleases(completion: @escaping (Result<FeaturedPlayListsResponse, Error>) -> Void) {
+  func getFeaturedReleases(completion: @escaping (Result<FeaturedPlaylistsResponse, Error>) -> Void) {
     
     createRequest(with: URL(string: "\(Constants.baseAPIURL)/browse/featured-playlists?limit=50"), type: .GET) { request in
       let task = URLSession.shared.dataTask(with: request) { data, _, error in
@@ -71,7 +71,7 @@ final class APICaller {
         }
         
         do {
-          let result = try JSONDecoder().decode(FeaturedPlayListsResponse.self, from: data)
+          let result = try JSONDecoder().decode(FeaturedPlaylistsResponse.self, from: data)
           completion(.success(result))
         } catch {
           print(error.localizedDescription)
@@ -204,6 +204,52 @@ extension APICaller {
           print(result)
 //          print(String(data: data, encoding: .ascii)!)
           
+        } catch {
+          print(error)
+          completion(.failure(error))
+        }
+      }
+      
+      task.resume()
+    }
+  }
+  
+  // MARK: - Category
+  
+  public func getCategories(completion: @escaping (Result<[Category], Error>) -> Void) {
+    
+    createRequest(with: URL(string: "\(Constants.baseAPIURL)/browse/categories?limit=50"), type: .GET) { request in
+      let task = URLSession.shared.dataTask(with: request) { data, _, error in
+        guard let data = data, error == nil else {
+          completion(.failure(APIError.failedToGetData))
+          return
+        }
+
+        do {
+          let result = try JSONDecoder().decode(AllCategoriesResponse.self, from: data)
+          completion(.success(result.categories.items))
+        } catch {
+          print(error)
+          completion(.failure(error))
+        }
+      }
+      
+      task.resume()
+    }
+  }
+  
+  public func getCategoryPlaylists(category: Category, completion: @escaping (Result<[PlayList], Error>) -> Void) {
+    
+    createRequest(with: URL(string: "\(Constants.baseAPIURL)/browse/categories/\(category.id)/playlists"), type: .GET) { request in
+      let task = URLSession.shared.dataTask(with: request) { data, _, error in
+        guard let data = data, error == nil else {
+          completion(.failure(APIError.failedToGetData))
+          return
+        }
+
+        do {
+          let result = try JSONDecoder().decode(CategoryPlaylistsResponse.self, from: data)
+          completion(.success(result.playlists.items))
         } catch {
           print(error)
           completion(.failure(error))

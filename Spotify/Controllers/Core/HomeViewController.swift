@@ -104,7 +104,7 @@ class HomeViewController: UIViewController {
     group.enter()
     
     var newReleases: NewReleasesResponse?
-    var featuredPlaylist: FeaturedPlayListsResponse?
+    var featuredPlaylist: FeaturedPlaylistsResponse?
     var recommendations: RecommendationsResponse?
     
     // New Releases
