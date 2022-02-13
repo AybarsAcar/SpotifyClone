@@ -11,6 +11,17 @@ enum BrowseSectionType {
   case newReleases(viewModels: [NewReleasesCellViewModel])
   case featuredPlaylists(viewModels: [FeaturedPlaylistCellViewModel])
   case recommendedTracks(viewModels: [RecommendedTrackCellViewModel])
+  
+  var title: String {
+    switch self {
+    case .newReleases:
+      return "New Released Albums"
+    case .featuredPlaylists:
+      return "Featured Playlists"
+    case .recommendedTracks:
+      return "Recommended"
+    }
+  }
 }
 
 class HomeViewController: UIViewController {
@@ -62,15 +73,24 @@ class HomeViewController: UIViewController {
   }
   
   private func configureCollectionView() {
+    
+    // add the collection view
     view.addSubview(collectionView)
+    
+    // register the cells
     collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
     collectionView.register(NewReleaseCollectionViewCell.self, forCellWithReuseIdentifier: NewReleaseCollectionViewCell.identifier)
     collectionView.register(FeaturedPlaylistCollectionViewCell.self, forCellWithReuseIdentifier: FeaturedPlaylistCollectionViewCell.identifier)
     collectionView.register(RecommendedTrackCollectionViewCell.self, forCellWithReuseIdentifier: RecommendedTrackCollectionViewCell.identifier)
+    
+    // register the header
+    collectionView.register(TitleHeaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier)
 
+    // bind the datasource and delegate
     collectionView.dataSource = self
     collectionView.delegate = self
     
+    // set background color
     collectionView.backgroundColor = .systemBackground
   }
   
@@ -286,11 +306,37 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
   }
   
+  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    guard
+      let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: TitleHeaderCollectionReusableView.identifier, for: indexPath) as? TitleHeaderCollectionReusableView,
+      kind == UICollectionView.elementKindSectionHeader
+    else {
+      return UICollectionReusableView()
+    }
+    
+    let section = indexPath.section
+    let sectionType = sections[section]
+    
+    header.configure(with: sectionType.title)
+    
+    return header
+  }
+  
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     return sections.count
   }
   
   private static func createSectionLayout(section: Int) -> NSCollectionLayoutSection {
+    
+    // add a section header
+    let supplementaryViews = [
+      NSCollectionLayoutBoundarySupplementaryItem(
+        layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)),
+        elementKind: UICollectionView.elementKindSectionHeader,
+        alignment: .top
+      )
+    ]
+    
     switch section {
     case 0:
       // Item - represents one of our cells
@@ -315,6 +361,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
       // Section
       let section = NSCollectionLayoutSection(group: horizontalGroup)
       section.orthogonalScrollingBehavior = .groupPaging
+      
+      section.boundarySupplementaryItems = supplementaryViews
       
       return section
       
@@ -341,6 +389,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
       let section = NSCollectionLayoutSection(group: horizontalGroup)
       section.orthogonalScrollingBehavior = .continuous
       
+      section.boundarySupplementaryItems = supplementaryViews
+      
       return section
       
     case 2:
@@ -360,6 +410,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
       // Section
       let section = NSCollectionLayoutSection(group: verticalGroup)
       
+      section.boundarySupplementaryItems = supplementaryViews
+      
       return section
       
     default:
@@ -377,6 +429,8 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
       
       // Section
       let section = NSCollectionLayoutSection(group: verticalGroup)
+      
+      section.boundarySupplementaryItems = supplementaryViews
       
       return section
     }

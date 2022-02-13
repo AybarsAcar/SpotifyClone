@@ -30,6 +30,7 @@ class PlaylistViewController: UIViewController {
       // Section
       let section = NSCollectionLayoutSection(group: verticalGroup)
       
+      // add a section header
       section.boundarySupplementaryItems = [
         NSCollectionLayoutBoundarySupplementaryItem(
           layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1)),
