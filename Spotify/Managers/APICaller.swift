@@ -175,7 +175,6 @@ extension APICaller {
         do {
           let result = try JSONDecoder().decode(AlbumDetailsResponse.self, from: data)
           completion(.success(result))
-          print(result)
           
         } catch {
           print(error)
