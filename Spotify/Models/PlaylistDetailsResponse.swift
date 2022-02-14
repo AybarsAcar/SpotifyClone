@@ -16,7 +16,7 @@ struct PlaylistDetailsResponse: Codable {
   let images: [APIImage]
   let id: String
   let owner: Owner
-  let primaryColor: String
+  let primaryColor: String?
   let playlistResponsePublic: Bool
   let snapshotID: String
   let tracks: PlaylistTracksResponse

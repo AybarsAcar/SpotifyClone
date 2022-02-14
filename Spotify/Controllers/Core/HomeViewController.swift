@@ -27,7 +27,7 @@ enum BrowseSectionType {
 class HomeViewController: UIViewController {
   
   private var newAlbums: [Album] = []
-  private var playlists: [PlayList] = []
+  private var playlists: [Playlist] = []
   private var tracks: [AudioTrack] = []
   
   private var collectionView: UICollectionView = {
@@ -185,7 +185,7 @@ class HomeViewController: UIViewController {
   }
  
   
-  private func configureModels(newAlbums: [Album], playlists: [PlayList], tracks: [AudioTrack]) {
+  private func configureModels(newAlbums: [Album], playlists: [Playlist], tracks: [AudioTrack]) {
     // cache them so we can refer to it when the user taps on it as we are navigating
     self.newAlbums = newAlbums
     self.playlists = playlists

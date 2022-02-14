@@ -60,7 +60,7 @@ class ProfileViewController: UIViewController, UITableViewDataSource, UITableVie
     // render the table view
     tableView.isHidden = false
     
-    models.append("Full Name: \(model.display_name)")
+    models.append("Full Name: \(model.displayName)")
     models.append("Email Address: \(model.email)")
     models.append("User ID: \(model.id)")
     models.append("Plan: \(model.product)")

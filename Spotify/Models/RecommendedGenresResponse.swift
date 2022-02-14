@@ -10,9 +10,3 @@ import Foundation
 struct RecommendedGenresResponse: Codable {
   let genres: [String]
 }
-
-/*
- {
-   "genres" : [ "acoustic"]
- }
- */

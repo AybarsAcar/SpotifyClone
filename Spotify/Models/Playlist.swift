@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct PlayList: Codable {
+struct Playlist: Codable {
   let collaborative: Bool
   let itemDescription: String
   let externalUrls: [String: String]

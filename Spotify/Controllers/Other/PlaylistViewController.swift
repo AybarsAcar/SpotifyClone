@@ -9,7 +9,7 @@ import UIKit
 
 class PlaylistViewController: UIViewController {
   
-  private let playlist: PlayList
+  private let playlist: Playlist
   
   private let collectionView = UICollectionView(
     frame: .zero,
@@ -45,7 +45,7 @@ class PlaylistViewController: UIViewController {
   
   private var viewModels = [RecommendedTrackCellViewModel]()
   
-  init(playlist: PlayList) {
+  init(playlist: Playlist) {
     self.playlist = playlist
     super.init(nibName: nil, bundle: nil) // because no .xib file
   }

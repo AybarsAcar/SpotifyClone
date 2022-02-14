@@ -189,7 +189,7 @@ extension APICaller {
   
   // MARK: - Playlists
   
-  public func getPlaylistDetails(for playlist: PlayList, completion: @escaping (Result<PlaylistDetailsResponse, Error>) -> Void) {
+  public func getPlaylistDetails(for playlist: Playlist, completion: @escaping (Result<PlaylistDetailsResponse, Error>) -> Void) {
     
     createRequest(with: URL(string: "\(Constants.baseAPIURL)/playlists/\(playlist.id)"), type: .GET) { request in
       let task = URLSession.shared.dataTask(with: request) { data, _, error in
@@ -238,7 +238,7 @@ extension APICaller {
     }
   }
   
-  public func getCategoryPlaylists(category: Category, completion: @escaping (Result<[PlayList], Error>) -> Void) {
+  public func getCategoryPlaylists(category: Category, completion: @escaping (Result<[Playlist], Error>) -> Void) {
     
     createRequest(with: URL(string: "\(Constants.baseAPIURL)/browse/categories/\(category.id)/playlists"), type: .GET) { request in
       let task = URLSession.shared.dataTask(with: request) { data, _, error in
@@ -250,6 +250,42 @@ extension APICaller {
         do {
           let result = try JSONDecoder().decode(CategoryPlaylistsResponse.self, from: data)
           completion(.success(result.playlists.items))
+        } catch {
+          print(error)
+          completion(.failure(error))
+        }
+      }
+      
+      task.resume()
+    }
+  }
+  
+  
+  // MARK: - Search
+  
+  func search(with query: String, completion: @escaping (Result<[SearchResult], Error>) -> Void) {
+    
+    let urlString = "\(Constants.baseAPIURL)/search?limit=10&type=album,artist,playlist,track&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+    
+    createRequest(with: URL(string: urlString), type: .GET) { request in
+      let task = URLSession.shared.dataTask(with: request) { data, _, error in
+        guard let data = data, error == nil else {
+          completion(.failure(APIError.failedToGetData))
+          return
+        }
+
+        do {
+          let result = try JSONDecoder().decode(SearchResultsResponse.self, from: data)
+
+          var searchResults: [SearchResult] = []
+          
+          searchResults.append(contentsOf: result.tracks.items.compactMap({ .track(model: $0) }))
+          searchResults.append(contentsOf: result.albums.items.compactMap({ .album(model: $0) }))
+          searchResults.append(contentsOf: result.artists.items.compactMap({ .artist(model: $0) }))
+          searchResults.append(contentsOf: result.playlists.items.compactMap({ .playlist(model: $0) }))
+
+          completion(.success(searchResults))
+          
         } catch {
           print(error)
           completion(.failure(error))

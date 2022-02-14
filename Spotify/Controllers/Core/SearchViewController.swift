@@ -47,6 +47,8 @@ class SearchViewController: UIViewController {
     // so we get hold of the text typed in the search bar
     searchController.searchResultsUpdater = self
     
+    searchController.searchBar.delegate = self
+    
     navigationItem.searchController = searchController
     
     view.addSubview(collectionView)
@@ -64,7 +66,7 @@ class SearchViewController: UIViewController {
           self?.collectionView.reloadData()
           
         case .failure(let error):
-          break
+          print(error.localizedDescription)
         }
       }
     }
@@ -80,20 +82,37 @@ class SearchViewController: UIViewController {
 
 
 // MARK: - UISearchResultsUpdating
-extension SearchViewController: UISearchResultsUpdating {
+extension SearchViewController: UISearchResultsUpdating, UISearchBarDelegate {
   
+  /// called each time the textField inside updates
   func updateSearchResults(for searchController: UISearchController) {
-    
+   
+  }
+
+  /// called when we click search
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     guard
-      let query = searchController.searchBar.text,
+      let query = searchBar.text,
       !query.trimmingCharacters(in: .whitespaces).isEmpty,
       let resultsController = searchController.searchResultsController as? SearchResultsViewController
     else {
       return
     }
     
-    // Perform Search
-    print(query)
+    resultsController.delegate = self
+    
+    APICaller.shared.search(with: query) { result in
+      DispatchQueue.main.async {
+        
+        switch result {
+        case .success(let results):
+          resultsController.update(with: results)
+          
+        case .failure(let error):
+          print(error.localizedDescription)
+        }
+      }
+    }
   }
 }
 
@@ -135,5 +154,32 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     // navigate
     navigationController?.pushViewController(vc, animated: true)
+  }
+}
+
+
+extension SearchViewController: SearchResultsViewControllerDelegate {
+  
+  /// handle navigation
+  func didTapResult(_ result: SearchResult) {
+    
+    switch result {
+      
+    case .artist(model: let model):
+      break
+      
+    case .album(model: let model):
+      let vc = AlbumViewController(album: model)
+      navigationController?.pushViewController(vc, animated: true)
+      vc.navigationItem.largeTitleDisplayMode = .never
+      
+    case .track(model: let model):
+      break
+      
+    case .playlist(model: let model):
+      let vc = PlaylistViewController(playlist: model)
+      navigationController?.pushViewController(vc, animated: true)
+      vc.navigationItem.largeTitleDisplayMode = .never
+    }
   }
 }

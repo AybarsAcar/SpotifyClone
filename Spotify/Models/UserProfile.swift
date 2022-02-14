@@ -9,132 +9,18 @@ import Foundation
 
 struct UserProfile: Codable {
   let country: String
-  let display_name: String
+  let displayName: String
   let email: String
-  let explicit_content: [String: Bool]
-  let external_urls: [String: String]
+  let explicitContent: [String: Bool]
+  let externalURLs: [String: String]
   let id: String
   let product: String
   let images: [APIImage]
+  
+  enum CodingKeys: String, CodingKey {
+    case displayName = "display_name"
+    case explicitContent = "explicit_content"
+    case externalURLs = "external_urls"
+    case country, email, id, product, images
+  }
 }
-
-
-/*
- {
-     country = AU;
-     "display_name" = Aybars;
-     email = "aybars.dev@gmail.com";
-     "explicit_content" =     {
-         "filter_enabled" = 0;
-         "filter_locked" = 0;
-     };
-     "external_urls" =     {
-         spotify = "https://open.spotify.com/user/31lbpik452y32274etxifwfa7mbe";
-     };
-     followers =     {
-         href = "<null>";
-         total = 0;
-     };
-     href = "https://api.spotify.com/v1/users/31lbpik452y32274etxifwfa7mbe";
-     id = 31lbpik452y32274etxifwfa7mbe;
-     images =     (
-     );
-     product = open;
-     type = user;
-     uri = "spotify:user:31lbpik452y32274etxifwfa7mbe";
- }
- {
-     country = AU;
-     "display_name" = Aybars;
-     email = "aybars.dev@gmail.com";
-     "explicit_content" =     {
-         "filter_enabled" = 0;
-         "filter_locked" = 0;
-     };
-     "external_urls" =     {
-         spotify = "https://open.spotify.com/user/31lbpik452y32274etxifwfa7mbe";
-     };
-     followers =     {
-         href = "<null>";
-         total = 0;
-     };
-     href = "https://api.spotify.com/v1/users/31lbpik452y32274etxifwfa7mbe";
-     id = 31lbpik452y32274etxifwfa7mbe;
-     images =     (
-     );
-     product = open;
-     type = user;
-     uri = "spotify:user:31lbpik452y32274etxifwfa7mbe";
- }
- {
-     country = AU;
-     "display_name" = Aybars;
-     email = "aybars.dev@gmail.com";
-     "explicit_content" =     {
-         "filter_enabled" = 0;
-         "filter_locked" = 0;
-     };
-     "external_urls" =     {
-         spotify = "https://open.spotify.com/user/31lbpik452y32274etxifwfa7mbe";
-     };
-     followers =     {
-         href = "<null>";
-         total = 0;
-     };
-     href = "https://api.spotify.com/v1/users/31lbpik452y32274etxifwfa7mbe";
-     id = 31lbpik452y32274etxifwfa7mbe;
-     images =     (
-     );
-     product = open;
-     type = user;
-     uri = "spotify:user:31lbpik452y32274etxifwfa7mbe";
- }
- {
-     country = AU;
-     "display_name" = Aybars;
-     email = "aybars.dev@gmail.com";
-     "explicit_content" =     {
-         "filter_enabled" = 0;
-         "filter_locked" = 0;
-     };
-     "external_urls" =     {
-         spotify = "https://open.spotify.com/user/31lbpik452y32274etxifwfa7mbe";
-     };
-     followers =     {
-         href = "<null>";
-         total = 0;
-     };
-     href = "https://api.spotify.com/v1/users/31lbpik452y32274etxifwfa7mbe";
-     id = 31lbpik452y32274etxifwfa7mbe;
-     images =     (
-     );
-     product = open;
-     type = user;
-     uri = "spotify:user:31lbpik452y32274etxifwfa7mbe";
- }
- {
-     country = AU;
-     "display_name" = Aybars;
-     email = "aybars.dev@gmail.com";
-     "explicit_content" =     {
-         "filter_enabled" = 0;
-         "filter_locked" = 0;
-     };
-     "external_urls" =     {
-         spotify = "https://open.spotify.com/user/31lbpik452y32274etxifwfa7mbe";
-     };
-     followers =     {
-         href = "<null>";
-         total = 0;
-     };
-     href = "https://api.spotify.com/v1/users/31lbpik452y32274etxifwfa7mbe";
-     id = 31lbpik452y32274etxifwfa7mbe;
-     images =     (
-     );
-     product = open;
-     type = user;
-     uri = "spotify:user:31lbpik452y32274etxifwfa7mbe";
- }
-
- */
- 

@@ -11,7 +11,7 @@ class CategoryViewController: UIViewController {
   
   let category: Category
   
-  private var playlists: [PlayList] = []
+  private var playlists: [Playlist] = []
   
   private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { _, _ -> NSCollectionLayoutSection? in
     let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
