@@ -179,7 +179,7 @@ extension SearchViewController: SearchResultsViewControllerDelegate {
       vc.navigationItem.largeTitleDisplayMode = .never
       
     case .track(model: let model):
-      break
+      PlaybackPresenter.startPlayback(from: self, track: model)
       
     case .playlist(model: let model):
       let vc = PlaylistViewController(playlist: model)
