@@ -9,7 +9,7 @@ import Foundation
 
 
 struct AudioTrack: Codable {
-  let album: Album?
+  var album: Album?
   let artists: [Artist]
   let availableMarkets: [String]
   let discNumber, durationMS: Int

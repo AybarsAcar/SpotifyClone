@@ -122,8 +122,11 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     collectionView.deselectItem(at: indexPath, animated: true)
 
+    // so the artwork changes when we move to the next song in a playlist
+    var track = tracks[indexPath.row]
+    track.album = self.album
+    
     // play song
-    let track = tracks[indexPath.row]
     PlaybackPresenter.shared.startPlayback(from: self, track: track)
   }
   
@@ -160,7 +163,14 @@ extension AlbumViewController: UICollectionViewDelegate, UICollectionViewDataSou
 extension AlbumViewController: PlaylistHeaderCollectionReusableViewDelegate {
   
   func playlistHeaderCollectionReusableViewDidTapPlayAll(_ header: PlaylistHeaderCollectionReusableView) {
-      
-    PlaybackPresenter.shared.startPlayback(from: self, tracks: tracks)
+  
+    // add album to the tracks
+    let tracksWithAlbum: [AudioTrack] = tracks.compactMap {
+      var track = $0
+      track.album = self.album
+      return track
+    }
+    
+    PlaybackPresenter.shared.startPlayback(from: self, tracks: tracksWithAlbum)
   }
 }

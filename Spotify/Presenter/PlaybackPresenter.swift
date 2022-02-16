@@ -24,19 +24,14 @@ final class PlaybackPresenter {
   private var track: AudioTrack?
   private var tracks = [AudioTrack]()
   
+  var index: Int = 0
+  
   var currentTrack: AudioTrack? {
     if let track = track, tracks.isEmpty {
       return track
     }
     
-    else if let player = self.playerQueue, !tracks.isEmpty {
-      let item = player.currentItem
-      let items = player.items()
-      
-      guard let index = items.firstIndex(where: { $0 == item }) else {
-        return nil
-      }
-      
+    else if playerQueue != nil && !tracks.isEmpty && index < tracks.count {
       return tracks[index]
     }
     
@@ -45,6 +40,7 @@ final class PlaybackPresenter {
   
   var player: AVPlayer?
   var playerQueue: AVQueuePlayer?
+  var playerVC: PlayerViewController?
   
   /// handles playing a track
   func startPlayback(from viewController: UIViewController, track: AudioTrack) {
@@ -68,6 +64,8 @@ final class PlaybackPresenter {
       // play the audio when presenting the view controller is complete
       self?.player?.play()
     }
+    
+    self.playerVC = vc
   }
   
   /// handles playing all the tracks in the entire album or playlist
@@ -93,6 +91,8 @@ final class PlaybackPresenter {
     viewController.present(UINavigationController(rootViewController: vc), animated: true) { [weak self] in
       self?.playerQueue?.play()
     }
+    
+    self.playerVC = vc
   }
 }
 
@@ -154,6 +154,8 @@ extension PlaybackPresenter: PlayerViewControllerDelegate {
     else if let player = playerQueue {
       // go to the next track
       player.advanceToNextItem()
+      index += 1
+     playerVC?.refreshUI()
     }
   }
   

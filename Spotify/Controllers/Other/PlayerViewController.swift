@@ -27,10 +27,7 @@ class PlayerViewController: UIViewController {
   
   private let imageView: UIImageView = {
     let imageView = UIImageView()
-    
     imageView.contentMode = .scaleAspectFill
-    imageView.backgroundColor = .systemBlue
-    
     return imageView
   }()
   
@@ -57,6 +54,10 @@ class PlayerViewController: UIViewController {
     
     imageView.frame = CGRect(x: 0, y: view.safeAreaInsets.top, width: view.width, height: view.width)
     controlsView.frame = CGRect(x: 10, y: imageView.bottom + 10, width: view.width - 20, height: view.height - imageView.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom - 15)
+  }
+  
+  func refreshUI() {
+    configure()
   }
   
   /// to configure the nav bar items
