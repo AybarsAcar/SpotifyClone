@@ -16,6 +16,8 @@ protocol PlayerControlsViewDelegate: AnyObject {
   func playerControlsViewDidTapNextButton(_ playerControlsView: PlayerControlsView)
   
   func playerControlsViewDidTapBackButton(_ playerControlsView: PlayerControlsView)
+
+  func playerControlsView(_ playerControlsView: PlayerControlsView, didUpdateSlider value: Float)
 }
 
 final class PlayerControlsView: UIView {
@@ -69,11 +71,13 @@ final class PlayerControlsView: UIView {
     let button = UIButton()
     button.tintColor = .label
     
-    let image = UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 44, weight: .bold))
-    button.setImage(image, for: .normal)
+    let pauseImage = UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 44, weight: .bold))
+    button.setImage(pauseImage, for: .normal)
     
     return button
   }()
+  
+  private var isPlaying = true
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -85,6 +89,9 @@ final class PlayerControlsView: UIView {
     addSubview(backButton)
     addSubview(nextButton)
     addSubview(playPauseButton)
+    
+    // assign slider action
+    volumeSlider.addTarget(self, action: #selector(didSlideSlider), for: .valueChanged)
     
     // assign button clicks
     backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
@@ -112,17 +119,37 @@ final class PlayerControlsView: UIView {
     nextButton.frame = CGRect(x: playPauseButton.right + 60, y: playPauseButton.top, width: buttonSize, height: buttonSize)
   }
   
+  func configure(with viewModel: PlayerControlsViewModel) {
+    nameLabel.text = viewModel.title
+    subtitleLabel.text = viewModel.subtitle
+  }
+  
   // MARK: - Button clicks
   
-  @objc func didTapBackButton() {
+  @objc private func didTapBackButton() {
     delegate?.playerControlsViewDidTapBackButton(self)
   }
   
-  @objc func didTapNextButton() {
+  @objc private func didTapNextButton() {
     delegate?.playerControlsViewDidTapNextButton(self)
   }
   
-  @objc func didTapPlayPauseButton() {
+  @objc private func didTapPlayPauseButton() {
+    self.isPlaying.toggle()
     delegate?.playerControlsViewDidTapPlayPauseButton(self)
+    
+    let pauseImage = UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 44, weight: .bold))
+    let playImage = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 44, weight: .bold))
+    
+    // update the icon
+    playPauseButton.setImage(isPlaying ? pauseImage : playImage, for: .normal)
+  }
+  
+  // MARK: - Slider
+  
+  @objc func didSlideSlider(_ slider: UISlider) {
+    let value = slider.value
+    
+    delegate?.playerControlsView(self, didUpdateSlider: value)
   }
 }

@@ -200,9 +200,7 @@ extension APICaller {
         do {
           let result = try JSONDecoder().decode(PlaylistDetailsResponse.self, from: data)
           completion(.success(result))
-          print(result)
-//          print(String(data: data, encoding: .ascii)!)
-          
+ 
         } catch {
           print(error)
           completion(.failure(error))
