@@ -21,6 +21,9 @@
 		00B457D927B7AF8E001E9DF6 /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B457D827B7AF8E001E9DF6 /* AlbumViewController.swift */; };
 		00B457DB27B7B310001E9DF6 /* AlbumDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B457DA27B7B310001E9DF6 /* AlbumDetailsResponse.swift */; };
 		00B457DD27B7B8D3001E9DF6 /* PlaylistDetailsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B457DC27B7B8D3001E9DF6 /* PlaylistDetailsResponse.swift */; };
+		00BCA72F27C03DB00020A1C5 /* LibraryPlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BCA72E27C03DB00020A1C5 /* LibraryPlaylistViewController.swift */; };
+		00BCA73127C03DD40020A1C5 /* LibraryAlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BCA73027C03DD40020A1C5 /* LibraryAlbumsViewController.swift */; };
+		00BCA73327C040E70020A1C5 /* LibraryToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BCA73227C040E70020A1C5 /* LibraryToggleView.swift */; };
 		00C8AC7327B736830047B1EE /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C8AC7227B736830047B1EE /* SettingsModels.swift */; };
 		00CA46B027B873D800FFDED9 /* PlaylistHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CA46AF27B873D800FFDED9 /* PlaylistHeaderCollectionReusableView.swift */; };
 		00CA46B227B8762500FFDED9 /* PlaylistHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00CA46B127B8762500FFDED9 /* PlaylistHeaderViewModel.swift */; };
@@ -82,6 +85,9 @@
 		00B457D827B7AF8E001E9DF6 /* AlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
 		00B457DA27B7B310001E9DF6 /* AlbumDetailsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailsResponse.swift; sourceTree = "<group>"; };
 		00B457DC27B7B8D3001E9DF6 /* PlaylistDetailsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDetailsResponse.swift; sourceTree = "<group>"; };
+		00BCA72E27C03DB00020A1C5 /* LibraryPlaylistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryPlaylistViewController.swift; sourceTree = "<group>"; };
+		00BCA73027C03DD40020A1C5 /* LibraryAlbumsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryAlbumsViewController.swift; sourceTree = "<group>"; };
+		00BCA73227C040E70020A1C5 /* LibraryToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryToggleView.swift; sourceTree = "<group>"; };
 		00C8AC7227B736830047B1EE /* SettingsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModels.swift; sourceTree = "<group>"; };
 		00CA46AF27B873D800FFDED9 /* PlaylistHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		00CA46B127B8762500FFDED9 /* PlaylistHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistHeaderViewModel.swift; sourceTree = "<group>"; };
@@ -155,6 +161,15 @@
 			path = Browse;
 			sourceTree = "<group>";
 		};
+		00BCA72D27C03D8B0020A1C5 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				00BCA72E27C03DB00020A1C5 /* LibraryPlaylistViewController.swift */,
+				00BCA73027C03DD40020A1C5 /* LibraryAlbumsViewController.swift */,
+			);
+			path = Library;
+			sourceTree = "<group>";
+		};
 		00CCD51D27BB8EF60045ED46 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +240,7 @@
 				00B457CB27B76FC1001E9DF6 /* Browse */,
 				00F2D05927B3C00800D8E420 /* LaunchScreen.storyboard */,
 				00CCD52027BB947C0045ED46 /* PlayerControlsView.swift */,
+				00BCA73227C040E70020A1C5 /* LibraryToggleView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -304,6 +320,7 @@
 		00F2D06F27B3C2B600D8E420 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				00BCA72D27C03D8B0020A1C5 /* Library */,
 				00B457D827B7AF8E001E9DF6 /* AlbumViewController.swift */,
 				00F2D07027B3C2CA00D8E420 /* AuthViewController.swift */,
 				00F2D07827B3C2F900D8E420 /* PlayerViewController.swift */,
@@ -455,6 +472,7 @@
 				00B457D327B795F5001E9DF6 /* NewReleasesCellViewModel.swift in Sources */,
 				00B457D727B7A70D001E9DF6 /* RecommendedTrackCellViewModel.swift in Sources */,
 				00F2D07D27B3C33700D8E420 /* SearchResultsViewController.swift in Sources */,
+				00BCA73127C03DD40020A1C5 /* LibraryAlbumsViewController.swift in Sources */,
 				00CA46B427B87EBC00FFDED9 /* TitleHeaderCollectionReusableView.swift in Sources */,
 				00CA46C027B8D30A00FFDED9 /* CategoryViewController.swift in Sources */,
 				00CA46BC27B8CD8E00FFDED9 /* AllCategoriesResponse.swift in Sources */,
@@ -468,6 +486,7 @@
 				00B457D127B77029001E9DF6 /* RecommendedTrackCollectionViewCell.swift in Sources */,
 				00E3BA6D27B504D3004096D8 /* AuthResponse.swift in Sources */,
 				00CE17A827BA571F007826CC /* SearchResultDefaultTableViewCell.swift in Sources */,
+				00BCA72F27C03DB00020A1C5 /* LibraryPlaylistViewController.swift in Sources */,
 				00B457C227B74A86001E9DF6 /* NewReleasesResponse.swift in Sources */,
 				00B457C427B74C9F001E9DF6 /* APIImage.swift in Sources */,
 				00CA46BA27B893DB00FFDED9 /* CategoryCollectionViewCell.swift in Sources */,
@@ -482,6 +501,7 @@
 				00CA46B827B88B7B00FFDED9 /* AlbumCollectionCellViewModel.swift in Sources */,
 				00CE17AA27BA58E2007826CC /* SearchResultDefaultTableViewCellViewModel.swift in Sources */,
 				00B457CF27B77016001E9DF6 /* FeaturedPlaylistCollectionViewCell.swift in Sources */,
+				00BCA73327C040E70020A1C5 /* LibraryToggleView.swift in Sources */,
 				00CA46C227B8F86000FFDED9 /* SearchResultsResponse.swift in Sources */,
 				00F2D04F27B3C00500D8E420 /* AppDelegate.swift in Sources */,
 				00F2D08B27B3C3AC00D8E420 /* UserProfile.swift in Sources */,
