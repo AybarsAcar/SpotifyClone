@@ -211,6 +211,86 @@ extension APICaller {
     }
   }
   
+  func getCurrentUserPlaylists(completion: @escaping (Result<[Playlist], Error>) -> Void) {
+    createRequest(with: URL(string: "\(Constants.baseAPIURL)/me/playlists"), type: .GET) { request in
+      
+      let task = URLSession.shared.dataTask(with: request) { data, _, error in
+        guard let data = data, error == nil else {
+          completion(.failure(APIError.failedToGetData))
+          return
+        }
+
+        do {
+          let result = try JSONDecoder().decode(LibraryPlaylistsResponse.self, from: data)
+          completion(.success(result.items))
+          
+        } catch {
+          print(error)
+          completion(.failure(error))
+        }
+      }
+      
+      task.resume()
+    }
+  }
+
+  func createPlaylist(with name: String, completion: @escaping (Bool) -> Void) {
+    // "/users/{user_id}/playlists"
+    getCurrentUserProfile { [weak self] result in
+      switch result {
+      case .success(let profile):
+        let urlString = "\(Constants.baseAPIURL)/users/\(profile.id)/playlists"
+        
+        self?.createRequest(with: URL(string: urlString), type: .POST) { baseRequest in
+          
+          var request = baseRequest
+          let postValues = ["name": name]
+          
+          request.httpBody = try? JSONSerialization.data(withJSONObject: postValues, options: .fragmentsAllowed)
+          
+          let task = URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else {
+              completion(false)
+              return
+            }
+            
+            do {
+              let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+              
+              if let response = result as? [String: Any],
+                 response["id"] as? String != nil {
+                
+                completion(true)
+                return
+              }
+
+              completion(false)
+              
+            } catch {
+              print(error)
+              completion(false)
+            }
+          }
+          
+          task.resume()
+        }
+        
+      case .failure(let error):
+        print(error)
+        completion(false)
+      }
+    }
+  }
+  
+  /// TODO: Improvemnets -> cache the user id to avoid extra request
+  func addTrackToPlaylist(_ track: AudioTrack, to playlist: Playlist, completion: @escaping (Bool) -> Void) {
+    
+  }
+  
+  func removeTrackFromPlaylist(_ track: AudioTrack, from playlist: Playlist, completion: @escaping (Bool) -> Void) {
+    
+  }
+  
   // MARK: - Category
   
   public func getCategories(completion: @escaping (Result<[Category], Error>) -> Void) {
