@@ -144,7 +144,7 @@ extension APICaller {
   // MARK: - Private
   
   enum HTTPMethod: String {
-    case GET, POST, DELETE
+    case GET, POST, DELETE, PUT
   }
   
   private func createRequest(with url: URL?, type: HTTPMethod ,completion: @escaping (URLRequest) -> Void) {
@@ -179,6 +179,52 @@ extension APICaller {
         } catch {
           print(error)
           completion(.failure(error))
+        }
+      }
+      
+      task.resume()
+    }
+  }
+  
+  func getCurrentUserAlbums(completion: @escaping (Result<[Album], Error>) -> Void) {
+    createRequest(with: URL(string: "\(Constants.baseAPIURL)/me/albums"), type: .GET) { request in
+      
+      let task = URLSession.shared.dataTask(with: request) { data, _, error in
+        guard let data = data, error == nil else {
+          completion(.failure(APIError.failedToGetData))
+          return
+        }
+
+        do {
+          let result = try JSONDecoder().decode(LibraryAlbumsResponse.self, from: data)
+          completion(.success(result.items.compactMap({ $0.album })))
+          
+        } catch {
+          print(error)
+          completion(.failure(error))
+        }
+      }
+      
+      task.resume()
+    }
+  }
+  
+  func saveAlbum(_ album: Album, completion: @escaping (Bool) -> Void) {
+    createRequest(with: URL(string: "\(Constants.baseAPIURL)/me/albums?ids=\(album.id)"), type: .PUT) { baseRequest in
+      var request = baseRequest
+      
+      request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+      
+      let task = URLSession.shared.dataTask(with: request) { _, response, error in
+        guard error == nil else {
+          completion(false)
+          return
+        }
+        
+        if let response = response as? HTTPURLResponse, response.statusCode >= 200, response.statusCode < 300 {
+          completion(true)
+        } else {
+          completion(false)
         }
       }
       

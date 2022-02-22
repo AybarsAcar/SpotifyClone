@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0053D26827C4D35300504B29 /* LibraryAlbumsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0053D26727C4D35300504B29 /* LibraryAlbumsResponse.swift */; };
 		00B457C227B74A86001E9DF6 /* NewReleasesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B457C127B74A86001E9DF6 /* NewReleasesResponse.swift */; };
 		00B457C427B74C9F001E9DF6 /* APIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B457C327B74C9F001E9DF6 /* APIImage.swift */; };
 		00B457C627B74FC4001E9DF6 /* FeaturedPlaylistsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B457C527B74FC4001E9DF6 /* FeaturedPlaylistsResponse.swift */; };
@@ -73,6 +74,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0053D26727C4D35300504B29 /* LibraryAlbumsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryAlbumsResponse.swift; sourceTree = "<group>"; };
 		00B457C127B74A86001E9DF6 /* NewReleasesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReleasesResponse.swift; sourceTree = "<group>"; };
 		00B457C327B74C9F001E9DF6 /* APIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIImage.swift; sourceTree = "<group>"; };
 		00B457C527B74FC4001E9DF6 /* FeaturedPlaylistsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedPlaylistsResponse.swift; sourceTree = "<group>"; };
@@ -270,6 +272,7 @@
 				00C8AC7227B736830047B1EE /* SettingsModels.swift */,
 				00F2D08A27B3C3AC00D8E420 /* UserProfile.swift */,
 				00BCA73427C04EA30020A1C5 /* LibraryPlaylistsResponse.swift */,
+				0053D26727C4D35300504B29 /* LibraryAlbumsResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -502,6 +505,7 @@
 				00CA46B627B88A5200FFDED9 /* AlbumTrackCollectionViewCell.swift in Sources */,
 				00CE17AC27BA5BE3007826CC /* SearchResultSubtitleTableViewCell.swift in Sources */,
 				00F2D08727B3C39500D8E420 /* AudioTrack.swift in Sources */,
+				0053D26827C4D35300504B29 /* LibraryAlbumsResponse.swift in Sources */,
 				00F2D05327B3C00500D8E420 /* HomeViewController.swift in Sources */,
 				00B457CD27B76FED001E9DF6 /* NewReleaseCollectionViewCell.swift in Sources */,
 				00F2D07127B3C2CA00D8E420 /* AuthViewController.swift in Sources */,

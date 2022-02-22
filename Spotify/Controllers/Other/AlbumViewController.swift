@@ -89,6 +89,9 @@ class AlbumViewController: UIViewController {
         }
       }
     }
+    
+    // add a save album button
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapActions))
   }
  
    override func viewDidLayoutSubviews() {
@@ -96,6 +99,25 @@ class AlbumViewController: UIViewController {
      
      collectionView.frame = view.bounds
    }
+  
+  @objc func didTapActions() {
+    let actionSheet = UIAlertController(title: album.name, message: "Actions", preferredStyle: .actionSheet)
+    
+    actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    actionSheet.addAction(UIAlertAction(title: "Save Album", style: .default, handler: { [weak self] _ in
+      
+      guard let self = self else { return }
+      
+      APICaller.shared.saveAlbum(self.album) { success in
+        if success {
+          // post the notification
+          NotificationCenter.default.post(name: .albumSavedNotification, object: nil)
+        }
+      }
+    }))
+    
+    present(actionSheet, animated: true)
+  }
 }
 
 
