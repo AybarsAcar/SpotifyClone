@@ -11,6 +11,8 @@ class PlaylistViewController: UIViewController {
   
   private let playlist: Playlist
   
+  public var isOwner = false
+  
   private let collectionView = UICollectionView(
     frame: .zero,
     collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { _, _ -> NSCollectionLayoutSection? in
@@ -89,12 +91,49 @@ class PlaylistViewController: UIViewController {
     }
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
+    
+    // add long press gesture
+    let gesture = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
+    collectionView.addGestureRecognizer(gesture)
   }
   
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     
     collectionView.frame = view.bounds
+  }
+  
+  @objc private func didLongPress(_ gesture: UILongPressGestureRecognizer) {
+    
+    guard gesture.state == .began else { return }
+    
+    let touchPoint = gesture.location(in: collectionView)
+    
+    guard let indexPath = collectionView.indexPathForItem(at: touchPoint) else { return }
+    
+    let trackToDelete = tracks[indexPath.row]
+    
+    // show an action sheet
+    let actionSheet = UIAlertController(title: "Remove \(trackToDelete.name)", message: "Would you like to remove \(trackToDelete.name) from the playlist", preferredStyle: .actionSheet)
+    
+    actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    actionSheet.addAction(UIAlertAction(title: "Remove", style: .destructive, handler: { [weak self] _ in
+      
+      guard let self = self else { return }
+      
+      APICaller.shared.removeTrackFromPlaylist(trackToDelete, from: self.playlist) { success in
+        if success {
+          // remove the track from the collection view as well and refresht the collection view
+          DispatchQueue.main.async {
+            self.tracks.remove(at: indexPath.row)
+            self.viewModels.remove(at: indexPath.row)
+            self.collectionView.reloadData()
+          }
+        }
+      }
+    }))
+    
+    present(actionSheet, animated: true, completion: nil)
   }
   
   @objc private func didTapShare() {
