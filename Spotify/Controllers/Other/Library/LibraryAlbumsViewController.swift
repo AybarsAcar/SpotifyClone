@@ -138,6 +138,8 @@ extension LibraryAlbumsViewController: UITableViewDelegate, UITableViewDataSourc
     // unhighlight it
     tableView.deselectRow(at: indexPath, animated: true)
     
+    HapticsManager.shared.vibrateForSelection()
+    
     let album = albums[indexPath.row]
     
     let vc = AlbumViewController(album: album)

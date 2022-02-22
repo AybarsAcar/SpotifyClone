@@ -147,6 +147,8 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     // unhiglight
     collectionView.deselectItem(at: indexPath, animated: true)
     
+    HapticsManager.shared.vibrateForSelection()
+    
     let category = categories[indexPath.row]
     
     // create the page
